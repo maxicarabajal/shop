@@ -26,6 +26,6 @@ public class Vendedor {
     private LocalDate nacimiento;
     private LocalDate antiguedad;
 
-    @OneToMany(mappedBy = "vendedor")
+    @OneToMany(mappedBy = "vendedor", fetch = FetchType.LAZY)
     private List<Pedido> pedidoList;
 }
