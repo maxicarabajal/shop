@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,5 +24,5 @@ public class Categoria {
     private int cantProductos;
 
     @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
-    private List<Producto> productoList;
+    private List<Producto> productoList = new ArrayList<>();
 }

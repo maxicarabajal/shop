@@ -2,15 +2,16 @@ package com.tienda.shop.dto;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class PedidoDTO {
 
     private Long idPedido;
-    private Long idVendedor;
-    private Long idCliente;
-    private List<DetallePedidoDTO> detallePedidoDTOList;
-    private int cantProducto;
-    private double precio;
+    private Long vendedor;
+    private Long cliente;
+    private List<DetallePedidoDTO> detallePedidoList = new ArrayList<>();
+    private int cantProductos;
+    private double costeTotal;
 }

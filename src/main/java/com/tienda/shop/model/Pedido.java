@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Pedido {
     private Cliente cliente;
 
     @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
-    private List<DetallePedido> detallePedidoList;
+    private List<DetallePedido> detallePedidoList = new ArrayList<>();
 
     private int cantProductos;
 

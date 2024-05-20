@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,5 +28,5 @@ public class Vendedor {
     private LocalDate antiguedad;
 
     @OneToMany(mappedBy = "vendedor", fetch = FetchType.LAZY)
-    private List<Pedido> pedidoList;
+    private List<Pedido> pedidoList = new ArrayList<>();
 }

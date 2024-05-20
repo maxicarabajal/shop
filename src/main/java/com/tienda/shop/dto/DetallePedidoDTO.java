@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class DetallePedidoDTO {
     private Long idDetallePedido;
-    private Long idPedido;
-    private Long idProducto;
-    private int cantProducto;
+    private Long pedido;
+    private Long producto;
+    private int cantidad;
     private double precioDetalle;
 }

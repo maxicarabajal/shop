@@ -1,5 +1,7 @@
 package com.tienda.shop.service;
 
+import com.tienda.shop.dto.ClienteDTO;
+import com.tienda.shop.mapper.ClienteMapper;
 import com.tienda.shop.model.Cliente;
 import com.tienda.shop.repository.IClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,12 @@ public class ClienteService implements IClienteService{
     private IClienteRepository repoCliente;
 
     @Override
-    public List<Cliente> getAllCliente() {
-        return repoCliente.findAll();
+    public List<ClienteDTO> getAllCliente() {
+        return ClienteMapper.INSTANCE.clienteListToClienteDTOList(repoCliente.findAll());
+    }
+
+    @Override
+    public void createCliente(ClienteDTO clienteDTO) {
+        repoCliente.save(ClienteMapper.INSTANCE.clienteDTOToCliente(clienteDTO));
     }
 }

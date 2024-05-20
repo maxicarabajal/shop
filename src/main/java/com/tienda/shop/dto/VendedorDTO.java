@@ -3,6 +3,7 @@ package com.tienda.shop.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,5 +14,5 @@ public class VendedorDTO {
     private String dni;
     private LocalDate nacimiento;
     private LocalDate antiguedad;
-    private List<PedidoDTO> pedidoDTOList;
+    private List<PedidoDTO> pedidoList = new ArrayList<>();
 }
