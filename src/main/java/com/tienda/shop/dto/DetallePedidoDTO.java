@@ -9,4 +9,11 @@ public class DetallePedidoDTO {
     private Long producto;
     private int cantidad;
     private double precioDetalle;
+
+    public DetallePedidoDTO(Long pedido, Long producto, int cantidad, double precioDetalle){
+        this.pedido = pedido;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precioDetalle = precioDetalle;
+    }
 }

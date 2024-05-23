@@ -14,4 +14,12 @@ public class PedidoDTO {
     private List<DetallePedidoDTO> detallePedidoList = new ArrayList<>();
     private int cantProductos;
     private double costeTotal;
+
+    public PedidoDTO(Long vendedor, Long cliente, int cantProductos){
+        this.vendedor = vendedor;
+        this.cliente = cliente;
+        this.cantProductos = cantProductos;
+        this.costeTotal = 0;
+    }
+
 }

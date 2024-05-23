@@ -11,4 +11,9 @@ public class CategoriaDTO {
     private String nombre;
     private int cantProductos;
     private List<ProductoDTO> productoList = new ArrayList<>();
+
+    public CategoriaDTO(String nombre, int cantProductos) {
+        this.nombre = nombre;
+        this.cantProductos = cantProductos;
+    }
 }

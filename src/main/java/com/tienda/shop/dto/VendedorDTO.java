@@ -15,4 +15,12 @@ public class VendedorDTO {
     private LocalDate nacimiento;
     private LocalDate antiguedad;
     private List<PedidoDTO> pedidoList = new ArrayList<>();
+
+    public VendedorDTO(String nombre, String apellido, String dni, LocalDate nacimiento, LocalDate antiguedad){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.nacimiento = nacimiento;
+        this.antiguedad = antiguedad;
+    }
 }
