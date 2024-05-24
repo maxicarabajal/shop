@@ -3,26 +3,60 @@ package com.tienda.shop.mapper;
 
 import com.tienda.shop.dto.ClienteDTO;
 import com.tienda.shop.model.Cliente;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import com.tienda.shop.model.Vendedor;
+import com.tienda.shop.repository.IVendedorRepository;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {PedidoMapper.class})
-public interface ClienteMapper{
 
-    ClienteMapper INSTANCE = Mappers.getMapper(ClienteMapper.class);
+public class ClienteMapper {
 
-    //Nos llega un cliente y lo pasamos a clienteDTO
-    ClienteDTO clienteToClienteDTO(Cliente cliente);
+    public static IVendedorRepository vendedorRepository;
 
-    //Nos llega un clienteDTO y lo pasamos a cliente
-    Cliente clienteDTOToCliente(ClienteDTO clienteDTO);
 
-    List<ClienteDTO> clienteListToClienteDTOList(List<Cliente> clientes);
+    public static ClienteDTO convertClienteToClienteDTO(Cliente cliente){
+        ClienteDTO clienteDTO = new ClienteDTO();
+        clienteDTO.setIdCliente(cliente.getIdCliente());
+        clienteDTO.setNombre(cliente.getNombre());
+        clienteDTO.setApellido(cliente.getApellido());
+        clienteDTO.setDni(cliente.getDni());
 
-    List<Cliente> clienteDTOListToClienteList(List<ClienteDTO> clienteDTO);
+
+        clienteDTO.setPedidoList(PedidoMapper.convertListToListDTO(cliente.getPedidoList()));
+
+        return clienteDTO;
+    }
+
+    public static Cliente convertClienteDTOToCliente(ClienteDTO clienteDTO){
+        Cliente cliente = new Cliente();
+        cliente.setIdCliente(clienteDTO.getIdCliente());
+        cliente.setNombre(clienteDTO.getNombre());
+        cliente.setApellido(clienteDTO.getApellido());
+        cliente.setDni(clienteDTO.getDni());
+        cliente.setPedidoList(PedidoMapper.convertListDTOToList(clienteDTO.getPedidoList()));
+
+        return cliente;
+    }
+
+    public static List<Cliente> convertListDTOToList(List<ClienteDTO> clienteDTOList){
+        List<Cliente> clienteList = new ArrayList<Cliente>();
+        for(ClienteDTO clienteDTO: clienteDTOList){
+            Cliente cliente = convertClienteDTOToCliente(clienteDTO);
+            clienteList.add(cliente);
+        }
+        return clienteList;
+    }
+
+    public static List<ClienteDTO> convertListToListDTO(List<Cliente> clienteList){
+        List<ClienteDTO> clienteDTOList = new ArrayList<ClienteDTO>();
+        for(Cliente cliente: clienteList){
+            ClienteDTO clienteDTO = convertClienteToClienteDTO(cliente);
+            clienteDTOList.add(clienteDTO);
+        }
+        return clienteDTOList;
+    }
 }
-
-
-

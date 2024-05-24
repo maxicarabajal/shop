@@ -17,11 +17,17 @@ public class ClienteService implements IClienteService{
 
     @Override
     public List<ClienteDTO> getAllCliente() {
-        return ClienteMapper.INSTANCE.clienteListToClienteDTOList(repoCliente.findAll());
+
+        return ClienteMapper.convertListToListDTO(repoCliente.findAll());
+    }
+
+    @Override
+    public ClienteDTO findClienteById(Long id) {
+        return ClienteMapper.convertClienteToClienteDTO(repoCliente.findById(id).orElse(null));
     }
 
     @Override
     public void createCliente(ClienteDTO clienteDTO) {
-        repoCliente.save(ClienteMapper.INSTANCE.clienteDTOToCliente(clienteDTO));
+        repoCliente.save(ClienteMapper.convertClienteDTOToCliente(clienteDTO));
     }
 }

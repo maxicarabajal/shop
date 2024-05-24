@@ -2,21 +2,57 @@ package com.tienda.shop.mapper;
 
 import com.tienda.shop.dto.VendedorDTO;
 import com.tienda.shop.model.Vendedor;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Mapper( componentModel = "spring", uses = {PedidoMapper.class})
-public interface VendedorMapper {
 
-    VendedorMapper INSTANCE = Mappers.getMapper(VendedorMapper.class);
+public class VendedorMapper {
 
-    VendedorDTO vendedorToVendedorDTO(Vendedor vendedor);
 
-    Vendedor vendedorDTOToVendedor(VendedorDTO vendedorDTO);
+    public static VendedorDTO convertVendedorToVendedorDTO(Vendedor vendedor){
+        VendedorDTO vendedorDTO = new VendedorDTO();
+        vendedorDTO.setIdVendedor(vendedor.getIdVendedor());
+        vendedorDTO.setNombre(vendedor.getNombre());
+        vendedorDTO.setApellido(vendedor.getApellido());
+        vendedorDTO.setDni(vendedor.getDni());
+        vendedorDTO.setNacimiento(vendedor.getNacimiento());
+        vendedorDTO.setAntiguedad(vendedor.getAntiguedad());
+        vendedorDTO.setPedidoList(PedidoMapper.convertListToListDTO(vendedor.getPedidoList()));
 
-    List<VendedorDTO> vendedorListToVendedorDTOList(List<Vendedor> vendedorList);
+        return vendedorDTO;
+    }
 
-    List<Vendedor> vendedorDTOListToVendedorList(List<VendedorDTO> vendedorDTOList);
+    public static Vendedor convertVendedorDTOToVendedor(VendedorDTO vendedorDTO){
+        Vendedor vendedor = new Vendedor();
+        vendedor.setIdVendedor(vendedorDTO.getIdVendedor());
+        vendedor.setNombre(vendedorDTO.getNombre());
+        vendedor.setApellido(vendedorDTO.getApellido());
+        vendedor.setDni(vendedorDTO.getDni());
+        vendedor.setNacimiento(vendedorDTO.getNacimiento());
+        vendedor.setAntiguedad(vendedorDTO.getAntiguedad());
+        vendedor.setPedidoList(PedidoMapper.convertListDTOToList(vendedorDTO.getPedidoList()));
+
+        return vendedor;
+    }
+
+    public static List<VendedorDTO> convertListToListDTO(List<Vendedor> vendedorList){
+        List<VendedorDTO> vendedorDTOList = new ArrayList<VendedorDTO>();
+        for(Vendedor vendedor: vendedorList){
+            VendedorDTO vendedorDTO = convertVendedorToVendedorDTO(vendedor);
+            vendedorDTOList.add(vendedorDTO);
+        }
+        return vendedorDTOList;
+    }
+    public static List<Vendedor> convertListDTOToList(List<VendedorDTO> vendedorDTOList){
+        List<Vendedor> vendedorList = new ArrayList<Vendedor>();
+        for(VendedorDTO vendedorDTO: vendedorDTOList){
+            Vendedor vendedor = convertVendedorDTOToVendedor(vendedorDTO);
+            vendedorList.add(vendedor);
+        }
+        return vendedorList;
+    }
 }

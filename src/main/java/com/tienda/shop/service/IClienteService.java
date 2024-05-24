@@ -11,6 +11,8 @@ public interface IClienteService {
 
     List<ClienteDTO> getAllCliente();
 
+    ClienteDTO findClienteById(Long id);
+
     void createCliente(ClienteDTO clienteDTO);
 
 
