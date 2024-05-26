@@ -2,6 +2,7 @@ package com.tienda.shop.service;
 
 import com.tienda.shop.dto.ClienteDTO;
 import com.tienda.shop.mapper.ClienteMapper;
+import com.tienda.shop.mapper.PedidoMapper;
 import com.tienda.shop.model.Cliente;
 import com.tienda.shop.repository.IClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class ClienteService implements IClienteService{
 
     @Autowired
     private ClienteMapper clienteMapper;
+
+    @Autowired
+    private PedidoMapper pedidoMapper;
 
 
     @Override
@@ -37,5 +41,20 @@ public class ClienteService implements IClienteService{
     @Override
     public void createCliente(ClienteDTO clienteDTO) {
         repoCliente.save(clienteMapper.dtoToEntity(clienteDTO));
+    }
+
+    @Override
+    public void deleteCliente(Long id) {
+        repoCliente.deleteById(id);
+    }
+
+    @Override
+    public void editCliente(Long id, ClienteDTO clienteDTO) {
+        Cliente cliente = findClienteByIdEntity(id);
+        cliente.setIdCliente(id);
+        cliente.setNombre(cliente.getNombre());
+        cliente.setApellido(clienteDTO.getApellido());
+        cliente.setDni(cliente.getDni());
+        cliente.setPedidoList(pedidoMapper.dtoListToEntityList(clienteDTO.getPedidoList()));
     }
 }

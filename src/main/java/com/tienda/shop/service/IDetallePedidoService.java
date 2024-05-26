@@ -16,4 +16,7 @@ public interface IDetallePedidoService{
     DetallePedido findDetallePedidoByIdEntity(Long id);
 
     void createDetallePedido(DetallePedidoDTO detallePedidoDTO);
+
+    void deleteDetallePedido(Long id);
+
 }

@@ -2,6 +2,7 @@ package com.tienda.shop.service;
 
 import com.tienda.shop.dto.CategoriaDTO;
 import com.tienda.shop.mapper.CategoriaMapper;
+import com.tienda.shop.mapper.ProductoMapper;
 import com.tienda.shop.model.Categoria;
 import com.tienda.shop.repository.ICategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class CategoriaService implements ICategoriaService{
 
     @Autowired
     private ICategoriaRepository repoCategoria;
+    @Autowired
+    private ProductoMapper productoMapper;
 
 
     @Override
@@ -38,5 +41,21 @@ public class CategoriaService implements ICategoriaService{
     @Override
     public void createCategoria(CategoriaDTO categoriaDTO) {
         repoCategoria.save(categoriaMapper.dtoToEntity(categoriaDTO));
+    }
+
+    @Override
+    public void deleteCategoria(Long id) {
+        repoCategoria.deleteById(id);
+    }
+
+    @Override
+    public void editCategoria(Long id, CategoriaDTO categoriaDTO) {
+        Categoria categoria = findCategoriaByIdEntity(id);
+        categoria.setIdCategoria(id);
+        categoria.setNombre(categoriaDTO.getNombre());
+        categoria.setCantProductos(categoriaDTO.getCantProductos());
+        categoria.setProductoList(productoMapper.listDtoToListEntity(categoriaDTO.getProductoList()));
+
+        repoCategoria.save(categoria);
     }
 }

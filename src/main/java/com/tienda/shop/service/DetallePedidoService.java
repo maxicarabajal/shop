@@ -37,4 +37,9 @@ public class DetallePedidoService implements IDetallePedidoService {
     public void createDetallePedido(DetallePedidoDTO detallePedidoDTO) {
         repoDetalle.save(detallePedidoMapper.dtoToEntity(detallePedidoDTO));
     }
+
+    @Override
+    public void deleteDetallePedido(Long id) {
+        repoDetalle.deleteById(id);
+    }
 }

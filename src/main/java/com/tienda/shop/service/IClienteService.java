@@ -17,6 +17,10 @@ public interface IClienteService {
 
     void createCliente(ClienteDTO clienteDTO);
 
+    void deleteCliente(Long id);
+
+    void editCliente(Long id, ClienteDTO clienteDTO);
+
 
 
     //Cliente getOneCliente(Long id);

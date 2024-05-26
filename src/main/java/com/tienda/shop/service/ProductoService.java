@@ -18,6 +18,8 @@ public class ProductoService implements IProductoService{
     private IProductoRepository repoProducto;
     @Autowired
     private ProductoMapper productoMapper;
+    @Autowired
+    private CategoriaMapper categoriaMapper;
 
 
 
@@ -44,5 +46,19 @@ public class ProductoService implements IProductoService{
        categoria.setCantProductos(cantProductos);
 
        repoProducto.save(producto);
+    }
+
+    @Override
+    public void deleteProducto(Long id) {
+        repoProducto.deleteById(id);
+    }
+
+    @Override
+    public void editProducto(Long id, ProductoDTO productoDTO) {
+        Producto producto = findProductoByIdEntity(id);
+        producto = productoMapper.dtoToEntity(productoDTO);
+        producto.setIdProducto(id);
+
+        repoProducto.save(producto);
     }
 }

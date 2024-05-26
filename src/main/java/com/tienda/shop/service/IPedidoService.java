@@ -16,4 +16,6 @@ public interface IPedidoService {
     Pedido findPedidoByIdEntity(Long id);
 
     void createPedido(PedidoDTO pedidoDTO);
+
+    void deletePedido(Long id);
 }

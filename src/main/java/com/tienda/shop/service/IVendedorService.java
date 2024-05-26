@@ -16,4 +16,8 @@ public interface IVendedorService {
     Vendedor findVendedorByIdEntity(Long id);
 
     void createVendedor(VendedorDTO vendedorDTO);
+
+    void deleteVendedor(Long id);
+
+    void editVendedor(Long id, VendedorDTO vendedorDTO);
 }

@@ -37,4 +37,17 @@ public class VendedorService implements IVendedorService {
     public void createVendedor(VendedorDTO vendedorDTO) {
         repoVendedor.save(vendedorMapper.dtoToEntity(vendedorDTO));
     }
+
+    @Override
+    public void deleteVendedor(Long id) {
+        repoVendedor.deleteById(id);
+    }
+
+    @Override
+    public void editVendedor(Long id, VendedorDTO vendedorDTO) {
+        Vendedor vendedor = findVendedorByIdEntity(id);
+        vendedor = vendedorMapper.dtoToEntity(vendedorDTO);
+        vendedor.setIdVendedor(id);
+        repoVendedor.save(vendedor);
+    }
 }

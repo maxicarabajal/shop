@@ -16,4 +16,8 @@ public interface ICategoriaService {
     Categoria findCategoriaByIdEntity(Long id);
 
     void createCategoria(CategoriaDTO categoriaDTO);
+
+    void deleteCategoria(Long id);
+
+    void editCategoria(Long id, CategoriaDTO categoriaDTO);
 }

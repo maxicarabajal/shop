@@ -82,4 +82,9 @@ public class PedidoService implements IPedidoService{
         pedido.setCantProductos(cantidadProductos);
         repoPedido.save(pedido);
     }
+
+    @Override
+    public void deletePedido(Long id) {
+        repoPedido.deleteById(id);
+    }
 }
