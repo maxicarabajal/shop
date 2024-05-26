@@ -15,19 +15,27 @@ public class ClienteService implements IClienteService{
     @Autowired
     private IClienteRepository repoCliente;
 
+    @Autowired
+    private ClienteMapper clienteMapper;
+
+
     @Override
     public List<ClienteDTO> getAllCliente() {
-
-        return ClienteMapper.convertListToListDTO(repoCliente.findAll());
+        return clienteMapper.entityListToDtoList(repoCliente.findAll()) ;
     }
 
     @Override
     public ClienteDTO findClienteById(Long id) {
-        return ClienteMapper.convertClienteToClienteDTO(repoCliente.findById(id).orElse(null));
+        return clienteMapper.entityToDto(repoCliente.findById(id).orElse(null));
+    }
+
+    @Override
+    public Cliente findClienteByIdEntity(Long id) {
+        return repoCliente.findById(id).orElse(null);
     }
 
     @Override
     public void createCliente(ClienteDTO clienteDTO) {
-        repoCliente.save(ClienteMapper.convertClienteDTOToCliente(clienteDTO));
+        repoCliente.save(clienteMapper.dtoToEntity(clienteDTO));
     }
 }

@@ -5,6 +5,7 @@ import com.tienda.shop.dto.PedidoDTO;
 import com.tienda.shop.mapper.*;
 import com.tienda.shop.model.DetallePedido;
 import com.tienda.shop.model.Pedido;
+import com.tienda.shop.model.Producto;
 import com.tienda.shop.repository.IPedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,27 @@ public class PedidoService implements IPedidoService{
     @Autowired
     private IProductoService serviProducto;
     @Autowired
+    private PedidoMapper pedidoMapper;
+    @Autowired
+    private ClienteMapper clienteMapper;
+    @Autowired
+    private VendedorMapper vendedorMapper;
+    @Autowired
+    private ProductoMapper productoMapper;
 
     @Override
     public List<PedidoDTO> getAllPedido() {
-        return PedidoMapper.convertListToListDTO(repoPedido.findAll());
+        return pedidoMapper.entityListToDtoList(repoPedido.findAll());
     }
 
     @Override
     public PedidoDTO findPedidoById(Long id) {
-        return PedidoMapper.convertPedidoToPedidoDTO(repoPedido.findById(id).orElse(null));
+        return pedidoMapper.entityToDto(repoPedido.findById(id).orElse(null));
+    }
+
+    @Override
+    public Pedido findPedidoByIdEntity(Long id) {
+        return repoPedido.findById(id).orElse(null);
     }
 
     @Override
@@ -41,24 +54,32 @@ public class PedidoService implements IPedidoService{
         int cantidadProductos = 0;
 
         Pedido pedido = new Pedido();
-        pedido.setCliente(ClienteMapper.convertClienteDTOToCliente(serviCliente.findClienteById(pedidoDTO.getCliente())));
-        pedido.setVendedor(VendedorMapper.convertVendedorDTOToVendedor(serviVendedor.findVendedorById(pedidoDTO.getVendedor())));
+        pedido.setCliente(serviCliente.findClienteByIdEntity(pedidoDTO.getCliente()));
+        pedido.setVendedor(serviVendedor.findVendedorByIdEntity(pedidoDTO.getVendedor()));
 
         List<DetallePedido> detallePedidoList = new ArrayList<DetallePedido>();
         for(DetallePedidoDTO detallePedidoDTO: pedidoDTO.getDetallePedidoList()){
             DetallePedido detallePedido = new DetallePedido();
-            detallePedido.setPedido(pedido);
-            detallePedido.setPrecioDetalle(detallePedidoDTO.getPrecioDetalle());
-            detallePedido.setProducto(ProductoMapper.convertProductoDTOToProducto(serviProducto.findProductoById(detallePedidoDTO.getProducto())));
-            detallePedido.setCantidad(detallePedidoDTO.getCantidad());
 
-            costeTotal = costeTotal + detallePedidoDTO.getPrecioDetalle();
-            cantidadProductos = cantidadProductos+detallePedidoDTO.getCantidad();
+            detallePedido.setPedido(pedido);
+
+            Producto producto = productoMapper.dtoToEntity(serviProducto.findProductoById(detallePedidoDTO.getProducto()));
+            detallePedido.setProducto(producto);
+
+            int cantidad = detallePedidoDTO.getCantidad();
+            detallePedido.setCantidad(cantidad);
+            cantidadProductos = cantidadProductos + cantidad;
+
+
+            double precioDetalle = producto.getPrecio()*cantidad;
+            detallePedido.setPrecioDetalle(precioDetalle);
+
+            costeTotal = costeTotal + precioDetalle ;
+
         }
 
         pedido.setCosteTotal(costeTotal);
         pedido.setCantProductos(cantidadProductos);
-
         repoPedido.save(pedido);
     }
 }

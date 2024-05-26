@@ -17,26 +17,32 @@ public class ProductoService implements IProductoService{
     @Autowired
     private IProductoRepository repoProducto;
     @Autowired
-    private ICategoriaService serviCategoria;
+    private ProductoMapper productoMapper;
+
 
 
     @Override
     public List<ProductoDTO> getAllProducto() {
-        return ProductoMapper.convertListToListDTO(repoProducto.findAll());
+        return productoMapper.listEntityToListDto(repoProducto.findAll());
     }
 
     @Override
     public ProductoDTO findProductoById(Long id) {
-        return ProductoMapper.convertProductoToProductoDTO(repoProducto.findById(id).orElse(null));
+        return productoMapper.entityToDto(repoProducto.findById(id).orElse(null));
+    }
+
+    @Override
+    public Producto findProductoByIdEntity(Long id) {
+        return repoProducto.findById(id).orElse(null);
     }
 
     @Override
     public void createProducto(ProductoDTO productoDTO) {
-        System.out.println("El producto essss: "+productoDTO);
-        Categoria categoria = CategoriaMapper.convertCategoriaDTOToCategoria(serviCategoria.findCategoriaById(productoDTO.getCategoria()));
-        repoProducto.save(ProductoMapper.convertProductoDTOToProducto(productoDTO));
-        int cantProductos = categoria.getCantProductos();
-        cantProductos = cantProductos+1;
-        categoria.setCantProductos(cantProductos);
+       Producto producto = productoMapper.dtoToEntity(productoDTO);
+       Categoria categoria = producto.getCategoria();
+       int cantProductos = categoria.getCantProductos() + 1;
+       categoria.setCantProductos(cantProductos);
+
+       repoProducto.save(producto);
     }
 }

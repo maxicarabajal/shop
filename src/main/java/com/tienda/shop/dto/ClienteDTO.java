@@ -18,9 +18,9 @@ public class ClienteDTO {
     private String dni;
     private List<PedidoDTO> pedidoList = new ArrayList<>();
 
-    public ClienteDTO(String nombre, String apellido, String dni) {
+    /*public ClienteDTO(String nombre, String apellido, String dni) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
-    }
+    }*/
 }

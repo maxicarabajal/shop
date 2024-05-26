@@ -14,25 +14,29 @@ import java.util.Optional;
 public class CategoriaService implements ICategoriaService{
 
     @Autowired
+    private CategoriaMapper categoriaMapper;
+
+    @Autowired
     private ICategoriaRepository repoCategoria;
+
 
     @Override
     public List<CategoriaDTO> getAllCategoria() {
-        return CategoriaMapper.convertListToListDTO(repoCategoria.findAll());
+        return categoriaMapper.listEntityToListDto(repoCategoria.findAll());
     }
 
     @Override
     public CategoriaDTO findCategoriaById(Long id) {
-        System.out.println("la id es finnnd:"+id);
-        Optional<Categoria> categoria = repoCategoria.findById(id);
-        if(!categoria.isPresent()){
-            System.out.println("No existe la categoria: "+categoria);
-        }
-        return CategoriaMapper.convertCategoriaToCategoriaDTO(categoria.get());
+        return categoriaMapper.entityToDto(repoCategoria.findById(id).orElse(null));
+    }
+
+    @Override
+    public Categoria findCategoriaByIdEntity(Long id) {
+        return repoCategoria.findById(id).orElse(null);
     }
 
     @Override
     public void createCategoria(CategoriaDTO categoriaDTO) {
-        repoCategoria.save(CategoriaMapper.convertCategoriaDTOToCategoria(categoriaDTO));
+        repoCategoria.save(categoriaMapper.dtoToEntity(categoriaDTO));
     }
 }

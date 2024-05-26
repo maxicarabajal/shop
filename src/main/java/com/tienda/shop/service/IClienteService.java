@@ -13,6 +13,8 @@ public interface IClienteService {
 
     ClienteDTO findClienteById(Long id);
 
+    Cliente findClienteByIdEntity(Long id);
+
     void createCliente(ClienteDTO clienteDTO);
 
 

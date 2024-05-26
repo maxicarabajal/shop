@@ -17,6 +17,7 @@
 		<java.version>17</java.version>
 		<org.projectlombok.version>1.18.16</org.projectlombok.version>
 		<org.lombok-mapstruct-binding>0.2.0</org.lombok-mapstruct-binding>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 	</properties>
 	<dependencies>
 
@@ -56,7 +57,12 @@
 			<scope>provided</scope>
 			<version>${org.projectlombok.version}</version>
 		</dependency>
-
+		<!-- Dependencia de MapStruct -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
 
 	</dependencies>
 
@@ -76,6 +82,38 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>17</source> <!-- depending on your project -->
+					<target>17</target> <!-- depending on your project -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+						<!-- other annotation processors if needed -->
+
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${org.projectlombok.version}</version>
+						</path>
+						<!-- Bind de MapStruct y Lombok-->
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>${org.lombok-mapstruct-binding}</version>
+						</path>
+						<!-- other annotation processors -->
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 

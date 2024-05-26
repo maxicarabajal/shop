@@ -18,7 +18,7 @@ public class CategoriaDTO {
     private int cantProductos=0;
     private List<ProductoDTO> productoList = new ArrayList<>();
 
-    public CategoriaDTO(String nombre) {
-        this.nombre = nombre;
-    }
+    /*public CategoriaDTO(String nombre) {
+       this.nombre = nombre;
+    }*/
 }

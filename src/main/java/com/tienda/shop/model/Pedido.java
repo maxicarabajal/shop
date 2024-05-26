@@ -28,7 +28,7 @@ public class Pedido {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<DetallePedido> detallePedidoList = new ArrayList<>();
 
     private int cantProductos;

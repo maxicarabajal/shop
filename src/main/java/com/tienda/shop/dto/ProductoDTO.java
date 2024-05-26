@@ -16,10 +16,10 @@ public class ProductoDTO {
     private int stock;
     private Long categoria;
 
-    public ProductoDTO(String nombre, double precio, int stock, Long categoria){
+    /*public ProductoDTO(String nombre, double precio, int stock, Long categoria){
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
         this.categoria = categoria;
-    }
+    }*/
 }

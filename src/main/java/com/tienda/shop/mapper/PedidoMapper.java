@@ -3,62 +3,52 @@ package com.tienda.shop.mapper;
 import com.tienda.shop.dto.PedidoDTO;
 import com.tienda.shop.model.Pedido;
 import com.tienda.shop.repository.IClienteRepository;
+import com.tienda.shop.repository.IVendedorRepository;
 import com.tienda.shop.service.IClienteService;
 import com.tienda.shop.service.IVendedorService;
-import lombok.Data;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {DetallePedidoMapper.class, ClienteMapper.class})
+public abstract class PedidoMapper {
 
-public class PedidoMapper {
+    @Autowired
+    private IClienteRepository clienteRepository;
+    @Autowired
+    private IVendedorRepository vendedorRepository;
 
-    private static IClienteService clienteService;
-    private static IVendedorService vendedorService;
+    @Autowired
+    private DetallePedidoMapper detallePedidoMapper;
 
-    public static PedidoDTO convertPedidoToPedidoDTO(Pedido pedido){
-        PedidoDTO pedidoDTO = new PedidoDTO();
-
-        pedidoDTO.setIdPedido(pedidoDTO.getIdPedido());
-        pedidoDTO.setCliente(pedido.getCliente().getIdCliente());
-        pedidoDTO.setCantProductos(pedido.getCantProductos());
-        pedidoDTO.setCosteTotal(pedido.getCosteTotal());
-        pedidoDTO.setVendedor(pedido.getVendedor().getIdVendedor());
-        pedidoDTO.setDetallePedidoList(DetallePedidoMapper.convertListToListDTO(pedido.getDetallePedidoList()));
-
-        return pedidoDTO;
-    }
-
-    public static Pedido convertPedidoDTOToPedido(PedidoDTO pedidoDTO){
+    public Pedido dtoToEntity(PedidoDTO pedidoDTO){
         Pedido pedido = new Pedido();
-
         pedido.setIdPedido(pedidoDTO.getIdPedido());
-        pedido.setCliente(ClienteMapper.convertClienteDTOToCliente(clienteService.findClienteById(pedidoDTO.getCliente())));
+        pedido.setCliente(clienteRepository.findById(pedidoDTO.getCliente()).orElse(null));
+        pedido.setVendedor(vendedorRepository.findById(pedidoDTO.getVendedor()).orElse(null));
         pedido.setCantProductos(pedidoDTO.getCantProductos());
+        pedido.setDetallePedidoList(detallePedidoMapper.dtoListToEntityList(pedidoDTO.getDetallePedidoList()));
         pedido.setCosteTotal(pedidoDTO.getCosteTotal());
-        pedido.setVendedor(VendedorMapper.convertVendedorDTOToVendedor(vendedorService.findVendedorById(pedidoDTO.getVendedor())));
-        pedido.setDetallePedidoList(DetallePedidoMapper.convertListDTOToList(pedidoDTO.getDetallePedidoList()));
 
         return pedido;
     }
 
-    public static List<Pedido> convertListDTOToList(List<PedidoDTO> pedidoDTOList){
-        List<Pedido> pedidoList = new ArrayList<>();
-        for(PedidoDTO pedidoDTO: pedidoDTOList){
-            Pedido pedido = convertPedidoDTOToPedido(pedidoDTO);
-            pedidoList.add(pedido);
-        }
-        return pedidoList;
+    public PedidoDTO entityToDto(Pedido pedido){
+        System.out.println("es: "+pedido.getVendedor().getIdVendedor());
+        PedidoDTO pedidoDTO = new PedidoDTO();
+        pedidoDTO.setIdPedido(pedido.getIdPedido());
+        pedidoDTO.setVendedor(pedido.getVendedor().getIdVendedor());
+        pedidoDTO.setCliente(pedido.getCliente().getIdCliente());
+        pedidoDTO.setCantProductos(pedido.getCantProductos());
+        pedidoDTO.setDetallePedidoList(detallePedidoMapper.entityListToDtoList(pedido.getDetallePedidoList()));
+        pedidoDTO.setCosteTotal(pedido.getCosteTotal());
+
+        return pedidoDTO;
     }
 
-    public static List<PedidoDTO> convertListToListDTO(List<Pedido> pedidoList){
-        List<PedidoDTO> pedidoDTOList = new ArrayList<>();
-        for(Pedido pedido: pedidoList){
-            PedidoDTO pedidoDTO = convertPedidoToPedidoDTO(pedido);
-            pedidoDTOList.add(pedidoDTO);
-        }
-        return pedidoDTOList;
-    }
+    public abstract List<PedidoDTO> entityListToDtoList(List<Pedido> pedidoList);
+
+    public abstract List<Pedido> dtoListToEntityList(List<PedidoDTO> pedidoDTOList);
 }

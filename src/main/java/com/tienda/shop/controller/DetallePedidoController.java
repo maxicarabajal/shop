@@ -1,16 +1,14 @@
 package com.tienda.shop.controller;
 
 import com.tienda.shop.dto.DetallePedidoDTO;
-import com.tienda.shop.dto.ProductoDTO;
 import com.tienda.shop.service.IDetallePedidoService;
-import com.tienda.shop.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-public class DetallePedido {
+public class DetallePedidoController {
 
     @Autowired
     private IDetallePedidoService serviDetallePedido;

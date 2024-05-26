@@ -21,7 +21,7 @@ public class Categoria {
     private Long idCategoria;
 
     private String nombre;
-    private int cantProductos;
+    private int cantProductos=0;
 
     @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
     private List<Producto> productoList = new ArrayList<>();
