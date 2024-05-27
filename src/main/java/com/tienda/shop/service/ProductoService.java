@@ -1,6 +1,7 @@
 package com.tienda.shop.service;
 
 import com.tienda.shop.dto.ProductoDTO;
+import com.tienda.shop.excepcion.EntityNotFoundException;
 import com.tienda.shop.mapper.CategoriaMapper;
 import com.tienda.shop.mapper.ProductoMapper;
 import com.tienda.shop.model.Categoria;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductoService implements IProductoService{
@@ -30,12 +32,17 @@ public class ProductoService implements IProductoService{
 
     @Override
     public ProductoDTO findProductoById(Long id) {
-        return productoMapper.entityToDto(repoProducto.findById(id).orElse(null));
+        ProductoDTO productoDTO = productoMapper.entityToDto(findProductoByIdEntity(id));
+        return productoDTO;
     }
 
     @Override
     public Producto findProductoByIdEntity(Long id) {
-        return repoProducto.findById(id).orElse(null);
+        Optional<Producto> producto = repoProducto.findById(id);
+        if(!producto.isPresent()){
+            throw new EntityNotFoundException("No se encontro un producto con id: "+id);
+        }
+        return producto.get();
     }
 
     @Override

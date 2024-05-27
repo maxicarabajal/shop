@@ -3,6 +3,7 @@ package com.tienda.shop.controller;
 import com.tienda.shop.dto.CategoriaDTO;
 import com.tienda.shop.model.Categoria;
 import com.tienda.shop.service.ICategoriaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,17 @@ public class CategoriaController {
     }
 
     @PostMapping("/categoria/create")
-    private void createCategoria(@RequestBody CategoriaDTO categoriaDTO){
+    private void createCategoria(@Valid @RequestBody CategoriaDTO categoriaDTO){
         serviCategoria.createCategoria(categoriaDTO);
+    }
+
+    @DeleteMapping("/categoria/delete/{id}")
+    private void deleteCategoria(@PathVariable Long id){
+        serviCategoria.deleteCategoria(id);
+    }
+
+    @DeleteMapping("/categoria/edit/{id}")
+    private void editCategoria(@PathVariable Long id,@Valid @RequestBody CategoriaDTO categoriaDTO){
+        serviCategoria.editCategoria(id,categoriaDTO);
     }
 }

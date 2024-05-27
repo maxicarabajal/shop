@@ -1,5 +1,6 @@
 package com.tienda.shop.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +14,13 @@ import java.util.List;
 @Builder
 public class ClienteDTO {
     private Long idCliente;
+    @NotBlank(message = "El nombre ingresado no es valido")
     private String nombre;
+    @NotBlank(message = "El apellido ingresado no es valido")
     private String apellido;
+    @NotBlank(message = "El dni ingresado no es valido")
     private String dni;
+
     private List<PedidoDTO> pedidoList = new ArrayList<>();
 
     /*public ClienteDTO(String nombre, String apellido, String dni) {

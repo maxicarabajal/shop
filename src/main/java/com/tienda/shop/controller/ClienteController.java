@@ -3,6 +3,7 @@ package com.tienda.shop.controller;
 import com.tienda.shop.dto.ClienteDTO;
 import com.tienda.shop.model.Cliente;
 import com.tienda.shop.service.IClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,18 @@ public class ClienteController {
     }
     
     @PostMapping("/cliente/create")
-    private void createCliente(@RequestBody ClienteDTO clienteDTO){
+    private void createCliente(@Valid @RequestBody ClienteDTO clienteDTO){
         serviCliente.createCliente(clienteDTO);
+    }
+
+    @DeleteMapping("/cliente/delete/{id}")
+    private void deleteCliente(@PathVariable Long id){
+        serviCliente.deleteCliente(id);
+    }
+
+    @PutMapping("/cliente/edit/{id}")
+    private void editCliente(@PathVariable Long id,@Valid @RequestBody ClienteDTO clienteDTO){
+        serviCliente.editCliente(id,clienteDTO);
     }
 
 

@@ -1,6 +1,7 @@
 package com.tienda.shop.service;
 
 import com.tienda.shop.dto.ClienteDTO;
+import com.tienda.shop.excepcion.EntityNotFoundException;
 import com.tienda.shop.mapper.ClienteMapper;
 import com.tienda.shop.mapper.PedidoMapper;
 import com.tienda.shop.model.Cliente;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService implements IClienteService{
@@ -30,12 +32,17 @@ public class ClienteService implements IClienteService{
 
     @Override
     public ClienteDTO findClienteById(Long id) {
-        return clienteMapper.entityToDto(repoCliente.findById(id).orElse(null));
+        ClienteDTO clienteDTO = clienteMapper.entityToDto(findClienteByIdEntity(id));
+        return clienteDTO;
     }
 
     @Override
     public Cliente findClienteByIdEntity(Long id) {
-        return repoCliente.findById(id).orElse(null);
+        Optional<Cliente> cliente = repoCliente.findById(id);
+        if(!cliente.isPresent()){
+            throw new EntityNotFoundException("No se encontro un cliente con id: "+id);
+        }
+        return cliente.get();
     }
 
     @Override
@@ -45,16 +52,18 @@ public class ClienteService implements IClienteService{
 
     @Override
     public void deleteCliente(Long id) {
-        repoCliente.deleteById(id);
+        Cliente cliente = findClienteByIdEntity(id);
+        repoCliente.delete(cliente);
     }
 
     @Override
     public void editCliente(Long id, ClienteDTO clienteDTO) {
         Cliente cliente = findClienteByIdEntity(id);
         cliente.setIdCliente(id);
-        cliente.setNombre(cliente.getNombre());
+        cliente.setNombre(clienteDTO.getNombre());
         cliente.setApellido(clienteDTO.getApellido());
-        cliente.setDni(cliente.getDni());
+        cliente.setDni(clienteDTO.getDni());
         cliente.setPedidoList(pedidoMapper.dtoListToEntityList(clienteDTO.getPedidoList()));
+        repoCliente.save(cliente);
     }
 }

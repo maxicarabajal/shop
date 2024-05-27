@@ -1,6 +1,7 @@
 package com.tienda.shop.service;
 
 import com.tienda.shop.dto.CategoriaDTO;
+import com.tienda.shop.excepcion.EntityNotFoundException;
 import com.tienda.shop.mapper.CategoriaMapper;
 import com.tienda.shop.mapper.ProductoMapper;
 import com.tienda.shop.model.Categoria;
@@ -30,12 +31,18 @@ public class CategoriaService implements ICategoriaService{
 
     @Override
     public CategoriaDTO findCategoriaById(Long id) {
-        return categoriaMapper.entityToDto(repoCategoria.findById(id).orElse(null));
+
+        CategoriaDTO categoriaDTO = categoriaMapper.entityToDto(findCategoriaByIdEntity(id));
+        return categoriaDTO;
     }
 
     @Override
     public Categoria findCategoriaByIdEntity(Long id) {
-        return repoCategoria.findById(id).orElse(null);
+        Optional<Categoria> categoria = repoCategoria.findById(id);
+        if(!categoria.isPresent()){
+            throw new EntityNotFoundException("No se encotro la categoria con id: "+id);
+        }
+        return categoria.get();
     }
 
     @Override
@@ -45,7 +52,8 @@ public class CategoriaService implements ICategoriaService{
 
     @Override
     public void deleteCategoria(Long id) {
-        repoCategoria.deleteById(id);
+        Categoria categoria = findCategoriaByIdEntity(id);
+        repoCategoria.delete(categoria);
     }
 
     @Override

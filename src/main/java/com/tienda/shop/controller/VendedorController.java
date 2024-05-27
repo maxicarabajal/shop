@@ -4,6 +4,7 @@ import com.tienda.shop.dto.ProductoDTO;
 import com.tienda.shop.dto.VendedorDTO;
 import com.tienda.shop.service.IProductoService;
 import com.tienda.shop.service.IVendedorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,17 @@ public class VendedorController {
     }
 
     @PostMapping("/vendedor/create")
-    private void createVendedor(@RequestBody VendedorDTO vendedorDTO){
+    private void createVendedor(@Valid @RequestBody VendedorDTO vendedorDTO){
         vendedorService.createVendedor(vendedorDTO);
+    }
+
+    @DeleteMapping("/vendedor/delete/{id}")
+    private void deleteVendedor(@PathVariable Long id){
+        vendedorService.deleteVendedor(id);
+    }
+
+    @PutMapping("/vendedor/edit/{id}")
+    private void editVendedor(@PathVariable Long id,@Valid @RequestBody VendedorDTO vendedorDTO){
+        vendedorService.editVendedor(id,vendedorDTO);
     }
 }

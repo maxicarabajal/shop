@@ -2,6 +2,7 @@ package com.tienda.shop.service;
 
 import com.tienda.shop.dto.DetallePedidoDTO;
 import com.tienda.shop.dto.PedidoDTO;
+import com.tienda.shop.excepcion.EntityNotFoundException;
 import com.tienda.shop.mapper.*;
 import com.tienda.shop.model.DetallePedido;
 import com.tienda.shop.model.Pedido;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PedidoService implements IPedidoService{
@@ -27,10 +29,6 @@ public class PedidoService implements IPedidoService{
     @Autowired
     private PedidoMapper pedidoMapper;
     @Autowired
-    private ClienteMapper clienteMapper;
-    @Autowired
-    private VendedorMapper vendedorMapper;
-    @Autowired
     private ProductoMapper productoMapper;
 
     @Override
@@ -40,12 +38,17 @@ public class PedidoService implements IPedidoService{
 
     @Override
     public PedidoDTO findPedidoById(Long id) {
-        return pedidoMapper.entityToDto(repoPedido.findById(id).orElse(null));
+        PedidoDTO pedidoDTO = pedidoMapper.entityToDto(findPedidoByIdEntity(id));
+        return pedidoDTO;
     }
 
     @Override
     public Pedido findPedidoByIdEntity(Long id) {
-        return repoPedido.findById(id).orElse(null);
+        Optional<Pedido> pedido = repoPedido.findById(id);
+        if(!pedido.isPresent()){
+            throw new EntityNotFoundException("No se encontro un pedido con id: "+id);
+        }
+        return pedido.get();
     }
 
     @Override
@@ -73,7 +76,6 @@ public class PedidoService implements IPedidoService{
 
             double precioDetalle = producto.getPrecio()*cantidad;
             detallePedido.setPrecioDetalle(precioDetalle);
-
             costeTotal = costeTotal + precioDetalle ;
 
         }
@@ -85,6 +87,7 @@ public class PedidoService implements IPedidoService{
 
     @Override
     public void deletePedido(Long id) {
-        repoPedido.deleteById(id);
+        Pedido pedido = findPedidoByIdEntity(id);
+        repoPedido.delete(pedido);
     }
 }

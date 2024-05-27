@@ -4,6 +4,7 @@ import com.tienda.shop.dto.PedidoDTO;
 import com.tienda.shop.dto.ProductoDTO;
 import com.tienda.shop.service.IPedidoService;
 import com.tienda.shop.service.IProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,12 @@ public class PedidoController {
     }
 
     @PostMapping("/pedido/create")
-    private void createPedido(@RequestBody PedidoDTO pedidoDTO){
+    private void createPedido(@Valid @RequestBody PedidoDTO pedidoDTO){
         serviPedido.createPedido(pedidoDTO);
+    }
+
+    @DeleteMapping("/pedido/delete/{id}")
+    private void deletePedido(@PathVariable Long id){
+        serviPedido.deletePedido(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.tienda.shop.service;
 
 import com.tienda.shop.dto.VendedorDTO;
+import com.tienda.shop.excepcion.EntityNotFoundException;
 import com.tienda.shop.mapper.VendedorMapper;
 import com.tienda.shop.model.Vendedor;
 import com.tienda.shop.repository.IVendedorRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VendedorService implements IVendedorService {
@@ -25,12 +27,17 @@ public class VendedorService implements IVendedorService {
 
     @Override
     public VendedorDTO findVendedorById(Long id) {
-        return vendedorMapper.entityToDto(repoVendedor.findById(id).orElse(null));
+        VendedorDTO vendedorDTO = vendedorMapper.entityToDto(findVendedorByIdEntity(id));
+        return vendedorDTO;
     }
 
     @Override
     public Vendedor findVendedorByIdEntity(Long id) {
-        return repoVendedor.findById(id).orElse(null);
+        Optional<Vendedor> vendedor = repoVendedor.findById(id);
+        if(!vendedor.isPresent()){
+            throw new EntityNotFoundException("No se encontro un vendedor con id: "+id);
+        }
+        return vendedor.get();
     }
 
     @Override
@@ -40,7 +47,8 @@ public class VendedorService implements IVendedorService {
 
     @Override
     public void deleteVendedor(Long id) {
-        repoVendedor.deleteById(id);
+        Vendedor vendedor = findVendedorByIdEntity(id);
+        repoVendedor.delete(vendedor);
     }
 
     @Override
