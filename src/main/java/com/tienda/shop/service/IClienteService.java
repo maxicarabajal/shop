@@ -21,8 +21,6 @@ public interface IClienteService {
 
     void editCliente(Long id, ClienteDTO clienteDTO);
 
-
-
-    //Cliente getOneCliente(Long id);
+    ClienteDTO findClienteByDni(String dni);
 
 }

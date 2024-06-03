@@ -20,4 +20,6 @@ public interface IVendedorService {
     void deleteVendedor(Long id);
 
     void editVendedor(Long id, VendedorDTO vendedorDTO);
+
+    VendedorDTO findVendedorByDni(String dni);
 }

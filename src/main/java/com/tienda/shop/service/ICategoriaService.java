@@ -20,4 +20,6 @@ public interface ICategoriaService {
     void deleteCategoria(Long id);
 
     void editCategoria(Long id, CategoriaDTO categoriaDTO);
+
+    CategoriaDTO findCategoriaByNombre(String nombre);
 }

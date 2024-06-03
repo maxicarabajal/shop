@@ -58,4 +58,14 @@ public class VendedorService implements IVendedorService {
         vendedor.setIdVendedor(id);
         repoVendedor.save(vendedor);
     }
+
+    @Override
+    public VendedorDTO findVendedorByDni(String dni) {
+        Optional<Vendedor> vendedor = repoVendedor.findVendedorByDni(dni);
+        if(!vendedor.isPresent()){
+            throw new EntityNotFoundException("No se encontro el vendedor con dni: "+dni);
+        }
+        return vendedorMapper.entityToDto(vendedor.get());
+    }
+
 }

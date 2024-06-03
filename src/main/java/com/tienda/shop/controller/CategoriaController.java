@@ -25,6 +25,11 @@ public class CategoriaController {
         return serviCategoria.findCategoriaById(id);
     }
 
+    @GetMapping("/categoria/get/nombre/{nombre}")
+    private CategoriaDTO findCategoriaByNombre(@PathVariable String nombre){
+        return serviCategoria.findCategoriaByNombre(nombre);
+    }
+
     @PostMapping("/categoria/create")
     private void createCategoria(@Valid @RequestBody CategoriaDTO categoriaDTO){
         serviCategoria.createCategoria(categoriaDTO);

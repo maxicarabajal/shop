@@ -21,4 +21,6 @@ public interface IProductoService {
 
     void editProducto(Long id, ProductoDTO productoDTO);
 
+    ProductoDTO findProductoByNombre(String nombre);
+
 }

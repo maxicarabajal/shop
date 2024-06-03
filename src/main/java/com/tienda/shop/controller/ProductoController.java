@@ -41,4 +41,9 @@ public class ProductoController {
     private void editProducto(@PathVariable Long id,@Valid @RequestBody ProductoDTO productoDTO){
         serviProducto.editProducto(id,productoDTO);
     }
+
+    @GetMapping("/producto/get/nombre/{nombre}")
+    private ProductoDTO findProductoByNombre(@PathVariable String nombre){
+        return serviProducto.findProductoByNombre(nombre);
+    }
 }

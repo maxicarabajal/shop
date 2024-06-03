@@ -66,4 +66,15 @@ public class ClienteService implements IClienteService{
         cliente.setPedidoList(pedidoMapper.dtoListToEntityList(clienteDTO.getPedidoList()));
         repoCliente.save(cliente);
     }
+
+    @Override
+    public ClienteDTO findClienteByDni(String dni) {
+        Optional<Cliente> cliente = repoCliente.findClienteByDni(dni);
+        if(!cliente.isPresent()){
+            throw new EntityNotFoundException("No se encontro el cliente con dni: "+dni);
+        }
+        return clienteMapper.entityToDto(cliente.get());
+    }
+
+
 }

@@ -24,6 +24,11 @@ public class ClienteController {
     private ClienteDTO getOneCliente(@PathVariable Long id){
         return serviCliente.findClienteById(id);
     }
+
+    @GetMapping("/cliente/get/dni/{dni}")
+    private ClienteDTO getOneClienteByDni(@PathVariable String dni){
+        return serviCliente.findClienteByDni(dni);
+    }
     
     @PostMapping("/cliente/create")
     private void createCliente(@Valid @RequestBody ClienteDTO clienteDTO){
@@ -39,6 +44,7 @@ public class ClienteController {
     private void editCliente(@PathVariable Long id,@Valid @RequestBody ClienteDTO clienteDTO){
         serviCliente.editCliente(id,clienteDTO);
     }
+
 
 
 }

@@ -68,4 +68,13 @@ public class ProductoService implements IProductoService{
 
         repoProducto.save(producto);
     }
+
+    @Override
+    public ProductoDTO findProductoByNombre(String nombre) {
+        Optional<Producto> producto = repoProducto.findProductoByNombre(nombre);
+        if(!producto.isPresent()){
+            throw new EntityNotFoundException("No se encontro el producto con nombre: "+nombre);
+        }
+        return productoMapper.entityToDto(producto.get());
+    }
 }

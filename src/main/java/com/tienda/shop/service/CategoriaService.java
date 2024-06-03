@@ -66,4 +66,13 @@ public class CategoriaService implements ICategoriaService{
 
         repoCategoria.save(categoria);
     }
+
+    @Override
+    public CategoriaDTO findCategoriaByNombre(String nombre) {
+        Optional<Categoria> categoria = repoCategoria.findCategoriaByNombre(nombre);
+        if(!categoria.isPresent()){
+            throw new EntityNotFoundException("No se encontro la categoria con nombre: "+nombre);
+        }
+        return categoriaMapper.entityToDto(categoria.get());
+    }
 }

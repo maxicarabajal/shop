@@ -26,6 +26,11 @@ public class VendedorController {
         return vendedorService.findVendedorById(id);
     }
 
+    @GetMapping("/vendedor/get/dni/{dni}")
+    private VendedorDTO findVendedorByDni(@PathVariable String dni){
+        return vendedorService.findVendedorByDni(dni);
+    }
+
     @PostMapping("/vendedor/create")
     private void createVendedor(@Valid @RequestBody VendedorDTO vendedorDTO){
         vendedorService.createVendedor(vendedorDTO);

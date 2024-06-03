@@ -3,6 +3,7 @@ package com.tienda.shop.service;
 import com.tienda.shop.dto.DetallePedidoDTO;
 import com.tienda.shop.dto.PedidoDTO;
 import com.tienda.shop.excepcion.EntityNotFoundException;
+import com.tienda.shop.excepcion.StockNotAvailable;
 import com.tienda.shop.mapper.*;
 import com.tienda.shop.model.DetallePedido;
 import com.tienda.shop.model.Pedido;
@@ -10,6 +11,7 @@ import com.tienda.shop.model.Producto;
 import com.tienda.shop.repository.IPedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,7 @@ public class PedidoService implements IPedidoService{
         return pedido.get();
     }
 
+    @Transactional
     @Override
     public void createPedido(PedidoDTO pedidoDTO) {
         double costeTotal = 0;
@@ -66,8 +69,13 @@ public class PedidoService implements IPedidoService{
 
             detallePedido.setPedido(pedido);
 
+
             Producto producto = productoMapper.dtoToEntity(serviProducto.findProductoById(detallePedidoDTO.getProducto()));
+            if(producto.getStock()< detallePedidoDTO.getCantidad()){
+                throw new StockNotAvailable("No hay Stock suficiente para la compra.");
+            }
             detallePedido.setProducto(producto);
+            producto.setStock(producto.getStock()-detallePedidoDTO.getCantidad());
 
             int cantidad = detallePedidoDTO.getCantidad();
             detallePedido.setCantidad(cantidad);
@@ -83,6 +91,7 @@ public class PedidoService implements IPedidoService{
         pedido.setCosteTotal(costeTotal);
         pedido.setCantProductos(cantidadProductos);
         repoPedido.save(pedido);
+
     }
 
     @Override
